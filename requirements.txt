@@ -1,0 +1,7 @@
+﻿flask
+librosa
+numpy
+pandas
+scikit-learn
+tensorflow-cpu
+gunicorn
