@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Bird Species Identification</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 6px;
+            margin: 4px 0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 6px;
+            border: 2px solid #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #64748b #f1f5f9;
+            scroll-behavior: smooth;
+        }
+        /* Professional Background and Layout */
+        body {
+            background-color: #ffffff; /* Clean white background */
+            color: #333333; /* Dark gray text for readability */
+        }
+        .container {
+            max-width: 7xl;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        .pdf-preview {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="font-['DM_Sans'] min-h-screen flex flex-col">
+    
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-2 sm:px-2 lg:px-0">
+            <div class="flex justify-between items-center py-2">
+                <!-- Logo -->
+                <a href="{{url_for('index')}}" class="flex items-center space-x-2">
+                    <i class="bi-bullseye text-2xl text-blue-600"></i>
+                    <span class="text-lg font-bold">Bird Audio Detection</span>
+                </a>
+
+                <!-- Mobile menu button -->
+                <button class="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+
+                <!-- Desktop menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="{{url_for('index')}}" class="text-gray-600 font-semibold hover:text-blue-600 transition-colors">Home</a>
+                    <a href="{{url_for('upload')}}" class="text-gray-600 font-semibold hover:text-blue-600 transition-colors">Upload</a>
+                    <a href="{{url_for('chart')}}" class="text-gray-600 font-semibold hover:text-blue-600 transition-colors">Chart</a>
+                </div>
+            </div>
+
+            <!-- Mobile menu (hidden by default) -->
+            <div class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="{{url_for('index')}}" class="block px-3 py-2 text-gray-600 font-semibold hover:text-blue-600">Home</a>
+                    <a href="{{url_for('upload')}}" class="block px-3 py-2 text-gray-600 font-semibold hover:text-blue-600">Upload</a>
+                    <a href="{{url_for('chart')}}" class="block px-3 py-2 text-gray-600 font-semibold hover:text-blue-600">Chart</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Guide Section -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-gray-900 text-center mb-10">Our Guide</h2>
+            <div class="flex flex-col items-center text-center">
+                <img src="{{url_for('static', filename='images/Abhay.jpg')}}" alt="Guide" class="w-32 h-32 rounded-full object-cover border-2 border-gray-200 mb-3">
+                <a href="https://www.linkedin.com/in/abhay-gaidhani-889a9382/" target="_blank">
+                    <p class="font-semibold text-lg text-gray-900 hover:text-blue-600">Prof. Abhay Gaidhani</p>
+                </a>
+                <p class="text-gray-600">Assistant Professor, Department of Computer Engineering SITRC, Nashik</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-8 flex-grow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-gray-900 text-center mb-10">Our Team</h2>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Team Member 1 -->
+                <li class="flex flex-col items-center text-center">
+                    <img src="{{url_for('static', filename='images/Avinash.jpg')}}" alt="Team Member 1" class="w-32 h-32 rounded-full object-cover border-2 border-gray-200 mb-3">
+                    <a href="https://www.linkedin.com/in/avinash-tatar/" target="_blank">
+                        <p class="font-semibold text-lg text-gray-900 hover:text-blue-600">Avinash Tatar</p>
+                    </a>
+                </li>
+                <!-- Team Member 2 -->
+                <li class="flex flex-col items-center text-center">
+                    <img src="{{url_for('static', filename='images/Bhushan.jpg')}}" alt="Team Member 2" class="w-32 h-32 rounded-full object-cover border-2 border-gray-200 mb-3">
+                    <a href="https://www.linkedin.com/in/bhushanchavan09/" target="_blank">
+                        <p class="font-semibold text-lg text-gray-900 hover:text-blue-600">Bhushan Chavan</p>
+                    </a>    
+                </li>
+                <!-- Team Member 3 -->
+                <li class="flex flex-col items-center text-center">
+                    <img src="{{url_for('static', filename='images/Snehal.jpg')}}" alt="Team Member 3" class="w-32 h-32 rounded-full object-cover border-2 border-gray-200 mb-3">
+                    <a href="https://www.linkedin.com/in/snehal-shirode-3b1a6020a/" target="_blank">
+                        <p class="font-semibold text-lg text-gray-900 hover:text-blue-600">Snehal Shirode</p>
+                    </a>
+                </li>
+                <!-- Team Member 4 -->
+                <li class="flex flex-col items-center text-center">
+                    <img src="{{url_for('static', filename='images/Kashyab.jpg')}}" alt="Team Member 4" class="w-32 h-32 rounded-full object-cover border-2 border-gray-200 mb-3">
+                    <a href="https://www.linkedin.com/in/kashyap-bhamare-ab94931a4/" target="_blank">
+                        <p class="font-semibold text-lg text-gray-900 hover:text-blue-600">Kashyap Bhamare</p>
+                    </a>
+                </li>
+            </ul>
+        </div> 
+    </section>
+
+    <!-- Research Paper Section -->
+    <section class="py-16">
+        <div class="text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-10">Research Paper</h2>
+            <div class="mt-6">
+                <iframe 
+                    src="{{url_for('static', filename='papers/research-paper.pdf')}}"
+                    class="pdf-preview" 
+                    title="Research Paper Preview"
+                ></iframe>
+                <!-- Fallback link in case the PDF doesn't display -->
+                <p class="mt-4 text-sm text-gray-600">
+                    If the PDF does not display, 
+                    <a 
+                        href="{{url_for('static', filename='papers/research-paper.pdf')}}"
+                        class="text-blue-600 hover:text-blue-800 underline" 
+                        target="_blank"
+                    >
+                        click here to download the research paper
+                    </a>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-3 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>© 2025 Automated Bird Species Identification. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('.md\\:hidden.p-2');
+        const mobileMenu = document.querySelector('.md\\:hidden.hidden');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

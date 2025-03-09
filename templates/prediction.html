@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Bird Species Identification - Prediction</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 6px;
+            margin: 4px 0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 6px;
+            border: 2px solid #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #64748b #f1f5f9;
+            scroll-behavior: smooth;
+        }
+        /* Background Image */
+        body {
+            background-image: url('../static/images/alexandre-pellaes.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .prediction-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="font-['DM_Sans'] min-h-screen flex flex-col relative">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-2 sm:px-2 lg:px-0">
+            <div class="flex justify-between items-center py-2">
+                <!-- Logo -->
+                <a href="{{url_for('index')}}" class="flex items-center space-x-2">
+                    <i class="bi-bullseye text-2xl text-blue-600"></i>
+                    <span class="text-lg font-bold">Bird Audio Detection</span>
+                </a>
+
+                <!-- Mobile menu button -->
+                <button class="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+
+                <!-- Desktop menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="{{url_for('index')}}" class="text-gray-600 font-semibold hover:text-blue-600 transition-colors">Home</a>
+                    <a href="{{url_for('upload')}}" class="text-gray-600 font-semibold hover:text-blue-600 transition-colors">Upload</a>
+                    <a href="{{url_for('chart')}}" class="text-gray-600 font-semibold hover:text-blue-600 transition-colors">Chart</a>
+                    <a href="{{url_for('about')}}" class="text-gray-600 font-semibold hover:text-blue-600 transition-colors">About Us</a>
+                </div>
+            </div>
+
+            <!-- Mobile menu (hidden by default) -->
+            <div class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="{{url_for('index')}}" class="block px-3 py-2 text-gray-600 font-semibold hover:text-blue-600">Home</a>
+                    <a href="{{url_for('upload')}}" class="block px-3 py-2 text-gray-600 font-semibold hover:text-blue-600">Upload</a>
+                    <a href="{{url_for('chart')}}" class="block px-3 py-2 text-gray-600 font-semibold hover:text-blue-600">Chart</a>
+                    <a href="{{url_for('about')}}" class="block px-3 py-2 text-gray-600 font-semibold hover:text-blue-600">About Us</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-16 relative z-10">
+        <div class="max-w-lg w-full space-y-8 prediction-card p-6 rounded-xl shadow-lg">
+            <!-- Header -->
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-white">Prediction</h2>
+                <p class="mt-2 text-sm text-gray-200">Bird Species Identification using Audio Signal Processing</p>
+            </div>
+
+            <!-- Prediction Content -->
+            {% if prediction %}
+            <div class="space-y-6 text-center">
+                <!-- Audio Player -->
+                <div>
+                    <audio controls class="w-full max-w-xs mx-auto">
+                        <source src="{{audio_path}}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+
+                <!-- Prediction Result -->
+                <div>
+                    <h3 class="text-xl font-semibold text-white">Bird Species Identified:</h3>
+                    <p class="mt-2 text-2xl font-bold text-blue-300">{{ prediction }}</p>
+                </div>
+
+                <!-- Bird Image -->
+                <div>
+                    <img id="bird-image" class="max-w-[150px] h-auto mx-auto rounded-md" alt="{{ prediction }}">
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center text-gray-200">
+                <p>No prediction available. Please upload an audio file first.</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-3 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>© 2025 Automated Bird Species Identification. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.addEventListener("DOMContentLoaded", function () {
+            const mobileMenuButton = document.querySelector('.md\\:hidden');
+            const mobileMenu = document.querySelector('.md\\:hidden.hidden');
+    
+            // Check if elements exist
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            } else {
+                console.error("Mobile menu button or menu not found. Check your HTML structure.");
+            }
+        });
+
+        // Bird image selection
+        {% if prediction %}
+        let birdName = "{{prediction}}";
+        let imagePath;
+        switch (birdName) {
+            case 'Song Sparrow':
+                imagePath = "./static/images/song-sparrow.jpeg";
+                break;
+            case 'American Robin':
+                imagePath = "./static/images/american-robin.jpeg";
+                break;
+            case 'Bewick\'s Wren':
+                imagePath = "./static/images/bewick-wren.jpeg";
+                break;
+            case 'Northern Mockingbird':
+                imagePath = "./static/images/northern-mockingbird.jpeg";
+                break;
+            case 'Northern Cardinal':
+                imagePath = "./static/images/northern-cardinal.jpeg";
+                break;
+            default:
+                imagePath = "./static/images/bewick-wren.jpeg";
+        }
+        document.getElementById("bird-image").src = imagePath;
+        {% endif %}
+    </script>
+</body>
+</html>
