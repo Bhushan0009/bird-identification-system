@@ -4,4 +4,4 @@ pandas
 librosa
 gunicorn
 scikit-learn
-tensorflow
+tensorflow-cpu
