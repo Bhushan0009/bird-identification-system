@@ -147,23 +147,43 @@
     <section class="py-16">
         <div class="text-center">
             <h2 class="text-3xl font-bold text-gray-900 mb-10">Research Paper</h2>
-            <div class="mt-6">
-                <iframe 
-                    src="{{url_for('static', filename='papers/research-paper.pdf')}}"
-                    class="pdf-preview" 
-                    title="Research Paper Preview"
-                ></iframe>
-                <!-- Fallback link in case the PDF doesn't display -->
-                <p class="mt-4 text-sm text-gray-600">
-                    If the PDF does not display, 
-                    <a 
-                        href="{{url_for('static', filename='papers/research-paper.pdf')}}"
-                        class="text-blue-600 hover:text-blue-800 underline" 
-                        target="_blank"
-                    >
-                        click here to download the research paper
-                    </a>.
-                </p>
+            <div>
+                <div class="mt-6">
+                    <iframe 
+                        src="{{url_for('static', filename='papers/IJCRT.pdf')}}"
+                        class="pdf-preview" 
+                        title="Research Paper Preview"
+                    ></iframe>
+                    <!-- Fallback link in case the PDF doesn't display -->
+                    <p class="mt-4 text-sm text-gray-600">
+                        If the PDF does not display, 
+                        <a 
+                            href="{{url_for('static', filename='papers/IJCRT.pdf')}}"
+                            class="text-blue-600 hover:text-blue-800 underline" 
+                            target="_blank"
+                        >
+                            click here to download the research paper
+                        </a>.
+                    </p>
+                </div>
+                <div class="mt-6">
+                    <iframe 
+                        src="{{url_for('static', filename='papers/IJSREM.pdf')}}"
+                        class="pdf-preview" 
+                        title="Research Paper Preview"
+                    ></iframe>
+                    <!-- Fallback link in case the PDF doesn't display -->
+                    <p class="mt-4 text-sm text-gray-600">
+                        If the PDF does not display, 
+                        <a 
+                            href="{{url_for('static', filename='papers/IJSREM.pdf')}}"
+                            class="text-blue-600 hover:text-blue-800 underline" 
+                            target="_blank"
+                        >
+                            click here to download the research paper
+                        </a>.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -186,4 +206,5 @@
     </script>
 </body>
 </html>
+
 
